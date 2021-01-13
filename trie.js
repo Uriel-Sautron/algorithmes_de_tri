@@ -11,10 +11,10 @@ fs.readFile(fileName, 'utf8', (error, data) => {
     console.log(data);
     const listToSort = data.split(" ").map(num => parseInt(num, 10))
     bubbleSort(listToSort);
-    sortByInsertion(listToSort);
+    insertSort(listToSort);
+    selectSort(listToSort);
+    quickSort(listToSort, 0, listToSort.length - 1);
 });
-
-
 
 
 
@@ -29,10 +29,10 @@ const bubbleSort = (array) => {
             };
         }
     }
-    console.log(`Tri à bulle: ${count} comparaisons - ${numbers}`);
+    console.log(`Tri à bulle: ${count} comparaisons => ${numbers}`);
 }
 
-const sortByInsertion = (array) => {
+const insertSort = (array) => {
     let numbers = [...array];
     let count = 0;
     for (let i = 1; i < numbers.length; i++) {
@@ -45,5 +45,56 @@ const sortByInsertion = (array) => {
         }
         numbers[j] = currentNumber;
     }
-    console.log(`Tri par insertion: ${count} comparaisons - ${numbers}`);
+    console.log(`Tri par insertion: ${count} comparaisons => ${numbers}`);
 }
+
+const selectSort = (array) => {
+    let numbers = [...array];
+    let count = 0;
+    for (let i = 0; i < numbers.length - 1; i++) {
+        let min = i;
+        for (let j = i + 1; j < numbers.length; j++) {
+            if (numbers[j] < numbers[min]) min = j;
+            count++;
+        }
+        if (min !== i)[numbers[min], numbers[i]] = [numbers[i], numbers[min]];
+    }
+    console.log(`Tri par sélection: ${count} comparaisons => ${numbers}`);
+}
+
+
+const partition = (numbers, start, end) => {
+    let count = 0;
+    const pivotValue = numbers[end];
+    let pivotIndex = start;
+    for (let i = start; i < end; i++) {
+        count++;
+        if (numbers[i] < pivotValue) { // we swap elements
+            [numbers[i], numbers[pivotIndex]] = [numbers[pivotIndex], numbers[i]];
+            pivotIndex++;
+            // we move to next element
+        };
+    }
+    // Putting the pivot value in the middle
+    [numbers[pivotIndex], numbers[end]] = [numbers[end], numbers[pivotIndex]]
+    console.log(`Tri rapide : ${count} comparaisons => ${numbers.join(" ")}`);
+    return pivotIndex;
+};
+
+const quickSort = (array, start, end) => {
+    let numbers = [...array]
+        // Base case or terminating case
+    if (start >= end) {
+        return;
+    }
+
+    // Returns pivotIndex
+    let index = partition(numbers, start, end);
+
+    // Recursively apply the same logic to the left and right subnumbersays
+
+    quickSort(numbers, start, index - 1);
+    quickSort(numbers, index + 1, end);
+
+
+};
