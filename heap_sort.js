@@ -9,70 +9,77 @@ fs.readFile(fileName, 'utf8', (error, data) => {
         return;
     }
     const listToSort = data.split(" ").map(num => parseInt(num, 10))
-    console.log(heapSort(listToSort));
+    heapSortMain(listToSort);
 });
 
-const heapSort = (dataCopy) => {
-    let numbers = [...dataCopy];
+const heapSortMain = (array) => {
+    let numbers = [...array];
     let count = 0;
 
-    buildMaxHeap(numbers); //we build max heap here
+    const heapSort = (numbers) => {
 
-    lastElement = numbers.length - 1; // get last element
+        buildMaxHeap(numbers); //we build max heap here
 
-    //heap sorting until there is 1 element left
-    while (lastElement > 0) {
-        count++;
-        swap(numbers, 0, lastElement);
+        lastElement = numbers.length - 1; // get last element
 
-        heapify(numbers, 0, lastElement);
+        //heap sorting until there is 1 element left
+        while (lastElement > 0) {
 
-        lastElement -= 1
+            swap(numbers, 0, lastElement);
+
+            heapify(numbers, 0, lastElement);
+
+            lastElement -= 1
+        };
+        return numbers
     };
-    return `Tri par tas : ${count} comparaisons => ${numbers}`
-};
 
-const buildMaxHeap = (numbers) => {
-    let i;
-    i = numbers.length / 2 - 1;
-    i = Math.floor(i);
+    const buildMaxHeap = (numbers) => {
+        let i;
+        i = numbers.length / 2 - 1;
+        i = Math.floor(i);
 
-    //build a max heap out of all array elements passed in
-    while (i >= 0) {
-        heapify(numbers, i, numbers.length);
-        i -= 1;
+        //build a max heap out of all array elements passed in
+        while (i >= 0) {
+            heapify(numbers, i, numbers.length);
+            i -= 1;
+        };
     };
-};
 
-const heapify = (heap, i, max) => {
-    while (i < max) {
-        index = i;
+    const heapify = (heap, i, max) => {
+        while (i < max) {
+            count++;
+            index = i;
 
-        leftChild = 2 * i + 1;
-        righChild = leftChild + 1;
+            leftChild = 2 * i + 1;
+            righChild = leftChild + 1;
 
-        if (leftChild < max && heap[leftChild] > heap[index]) {
-            index = leftChild;
+            if (leftChild < max && heap[leftChild] > heap[index]) {
+                index = leftChild;
+            }
+
+            if (righChild < max && heap[righChild] > heap[index]) {
+                index = righChild;
+            }
+
+            if (index == i) {
+                return;
+            }
+
+            swap(heap, i, index);
+
+            i = index;
         }
+    };
 
-        if (righChild < max && heap[righChild] > heap[index]) {
-            index = righChild;
-        }
+    const swap = (numbers, firstItemIndex, lastItemsInde) => {
+        let tmp = numbers[firstItemIndex];
 
-        if (index == i) {
-            return;
-        }
-
-        swap(heap, i, index);
-
-        i = index;
+        // Swap first and last items in the array
+        numbers[firstItemIndex] = numbers[lastItemsInde];
+        numbers[lastItemsInde] = tmp;
     }
-};
 
-const swap = (numbers, firstItemIndex, lastItemsInde) => {
-    let tmp = numbers[firstItemIndex];
-
-    // Swap first and last items in the array
-    numbers[firstItemIndex] = numbers[lastItemsInde];
-    numbers[lastItemsInde] = tmp;
+    numbers = heapSort(numbers);
+    console.log(`Tri par tas : ${count} comparaisons => ${numbers}`);
 }
